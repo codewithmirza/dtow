@@ -1,23 +1,35 @@
-// main.js
+// Assuming you have a function to load the C WebAssembly module (check your environment/tools for specifics)
+async function loadCModule() {
+  const response = await fetch('my_c_module.wasm');
+  const buffer = await response.arrayBuffer();
+  return await WebAssembly.compile(buffer);
+}
+
 import * as dartProgram from './main.dart.mjs';
 
-async function callCFunctionFromJS(value) {
-  const imports = {};
+async function callCFunctionFromJS(value1, value2) {
+  // Load the C module
+  const cModule = await loadCModule();
+
+  const imports = {
+    // Provide the C module instance here
+    'my_c_module': {
+      add: cModule.exports.add, // Assuming 'add' is the exported function from C
+    },
+  };
 
   const module = await dartProgram.instantiate(
     WebAssembly.compileStreaming(fetch('main.dart.wasm')),
     imports
   );
 
-  // Call the function from the module
-  const result = module.exports.myCFunction(value);
-
-  // Display the result on the screen
+  const result = module.exports.myDartFunction(value1, value2);
   document.getElementById('output-paragraph').textContent = result;
 }
 
-// Use the function here, for example on button click
+// Event listener remains the same
 document.getElementById('call-button').addEventListener('click', () => {
-  const inputValue = document.getElementById('input').value;
-  callCFunctionFromJS(inputValue);
+  const inputValue1 = document.getElementById('input1').value;
+  const inputValue2 = document.getElementById('input2').value;
+  callCFunctionFromJS(inputValue1, inputValue2);
 });

@@ -7,3 +7,8 @@ environment:
 
 dependencies:
   ffi: ^1.1.2
+  dart_native: ^0.2.6
+
+dev_dependencies:
+  build_runner: ^2.1.4
+  dart_native_gen: ^0.2.6

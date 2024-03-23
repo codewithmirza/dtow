@@ -1,7 +1,6 @@
-// my_c_module.c
-#include <emscripten.h>
+// simple.c
+#include <stdio.h>
 
-EMSCRIPTEN_KEEPALIVE
-int myCFunction(int value) {
-    return value * 2;
+int add(int a, int b) {
+    return a + b;
 }
