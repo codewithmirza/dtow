@@ -3,24 +3,21 @@ import 'dart:ffi' as ffi;
 // Define the C function signature
 typedef NativeMyCFunction = ffi.Int32 Function(ffi.Int32);
 
-// Use NativeFunction for direct binding
+// Expose the C function to JavaScript using @JS()
 external NativeMyCFunction myCFunction;
 
-// Internal function to handle C calls
+// Function to handle C calls from Dart (if needed)
 void callCFunctionFromDart(int value) {
   try {
-    final result = myCFunction(value as ffi.Int32);
+    final result =
+        myCFunction(value as ffi.Int32); // Remove cast if not necessary
     print('Result from C function: $result');
-  } on ArgumentError {
-    print('Error looking up function pointer');
+  } on ArgumentError catch (e) {
+    print('Error looking up function pointer: $e');
   }
 }
 
-// Dart function exposed to JavaScript (without JS interop decorator)
-void callCFunction(int value) {
-  callCFunctionFromDart(value); // Delegate to the internal function
-}
-
+// Entry point for the Dart program
 void main() async {
   final cModule = ffi.DynamicLibrary.open(
       'my_c_module.wasm'); // Assuming the WASM file exists
@@ -31,7 +28,7 @@ void main() async {
         .lookup<ffi.Pointer<ffi.NativeFunction<NativeMyCFunction>>>(
             'myCFunction')
         .value as NativeMyCFunction;
-  } on ArgumentError {
-    print('Error looking up function pointer');
+  } on ArgumentError catch (e) {
+    print('Error looking up function pointer: $e');
   }
 }
