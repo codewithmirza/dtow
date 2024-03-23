@@ -9,45 +9,6 @@
   <p id="output-paragraph"></p>
   <button id="call-button">Call C Function</button>
   <script src="main.dart.mjs" type="module"></script>
-  <script type="module">
-    // Import the JavaScript code generated from your Dart code
-    import * as dartProgram from './main.dart.mjs';
-
-    const callButton = document.getElementById('call-button');
-    callButton.addEventListener('click', async () => {
-      const inputElement = document.getElementById('input');
-      const value = parseInt(inputElement.value, 10) || 0;
-
-      // Path to your WASM module file
-      const wasmModulePath = 'main.dart.wasm';
-
-      try {
-        // Fetch the WASM module
-        const response = await fetch(wasmModulePath);
-        if (!response.ok) {
-          throw new Error('Failed to fetch WASM module');
-        }
-        const wasmBuffer = await response.arrayBuffer();
-
-        // Provide the necessary imports for the C module
-        const imports = {
-          // Memory object for memory management (if needed)
-          env: {
-            memory: new WebAssembly.Memory({ initial: 256, maximum: 256 })
-          },
-          // Functions or objects required by your C module
-          // Add your imports here as needed
-        };
-
-        // Instantiate the module with the necessary imports
-        const module = await dartProgram.instantiate(wasmBuffer, imports);
-
-        // Call the invoke function with the instantiated module
-        dartProgram.invoke(module, value);
-      } catch (error) {
-        console.error('Error loading WASM module:', error);
-      }
-    });
-  </script>
+  <script type="module" src="script.js"></script>
 </body>
 </html>

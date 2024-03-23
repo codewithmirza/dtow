@@ -1,8 +1,7 @@
-#include <stdio.h>
+// my_c_module.c
+#include <emscripten.h>
 
-// Mark the function as exportable to make it accessible from Dart
-__attribute__((export_name("myCFunction")))
+EMSCRIPTEN_KEEPALIVE
 int myCFunction(int value) {
-    printf("Received value from Dart: %d\n", value);
     return value * 2;
 }
