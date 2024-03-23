@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+  text-align: center;
+  margin-top: 100px;
+  font-family: sans-serif; /* Set a base font for readability */
+}
+
+input, button, textarea {
+  display: block; /* Make them fill the available width */
+  margin-bottom: 15px; /* Add some spacing between elements */
+  padding: 10px 20px; /* Add padding for better user interaction */
+  border: 1px solid #ccc; /* Add a light border */
+  border-radius: 5px; /* Add rounded corners for a softer look */
+}
+
+input[type="text"] { /* Style the input field specifically */
+  width: 200px; /* Set a fixed width for the input */
+}
+
+button {
+  background-color: #4CAF50; /* Green background for the button */
+  color: white; /* White text for better contrast */
+  cursor: pointer; /* Indicate clickable behavior */
+}
+
+button:hover { /* Style the button on hover */
+  background-color: #45A049; /* Slightly darker green on hover */
+}
+  </style>
+</head>
+<body>
+<input type="text" id="input" placeholder="Enter a number">
+<br>
+<p id="output-paragraph"></p>
+<button id="call-button">Call C Function</button>
+<script type="module" src="main.dart.mjs"></script>
+<script type="application/wasm" src="main.dart.wasm"></script>
+<script>
+  // Import at the beginning
+  import 'main.dart.mjs' as dartProgram;
+
+  async function main() {
+    const imports = {}; // Prepare necessary imports for the C module
+    try {
+      const module = await dartProgram.instantiate(
+          WebAssembly.compileStreaming(fetch('main.dart.wasm')),
+          imports
+      );
+      await dartProgram.invoke(module);
+    } catch (error) {
+      console.error('Error instantiating Dart WASM module:', error);
+    }
+  }
+  main();
+
+  const callButton = document.getElementById('call-button');
+callButton.addEventListener('click', () => {
+  const inputElement = document.getElementById('input');
+  const value = int.tryParse(inputElement.value) ?? 0;
+  dartProgram.callCFunction(value);
+
+  // Access the output from the Dart function's print statement
+  const output = instance.exports.$getPrintOutput(); // Assuming this method is available
+  document.getElementById('output-paragraph').textContent = output;
+});
+
+</script>
+
+</body>
+</html>
