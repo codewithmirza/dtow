@@ -1,0 +1,43 @@
+body {
+    font-family: sans-serif; /* Set a base font for readability */
+    margin: 50px auto; /* Center the content horizontally */
+    max-width: 500px; /* Set a maximum width for responsiveness */
+    background-color: #f5f5f5; /* Light background color */
+  }
+  
+  h1 {
+    text-align: center; /* Center the title */
+    margin-bottom: 20px; /* Add some space after the title */
+  }
+  
+  input[type="text"] {
+    display: block; /* Make it fill the available width */
+    width: 100%; /* Set the full width */
+    padding: 10px 20px; /* Add padding for better user interaction */
+    border: 1px solid #ccc; /* Add a light border */
+    border-radius: 5px; /* Add rounded corners for a softer look */
+    font-size: 16px; /* Set a larger font size for better readability */
+  }
+  
+  button {
+    background-color: #4CAF50; /* Green background for the button */
+    color: white; /* White text for better contrast */
+    padding: 10px 20px; /* Add padding for better user interaction */
+    border: none; /* Remove the default border */
+    border-radius: 5px; /* Add rounded corners */
+    cursor: pointer; /* Indicate clickable behavior */
+    margin-top: 15px; /* Add some space above the button */
+    display: block; /* Make it fill the available width */
+    width: 100%; /* Set the full width */
+  }
+  
+  button:hover {
+    background-color: #45A049; /* Slightly darker green on hover */
+  }
+  
+  #output-paragraph {
+    text-align: center; /* Center the output text */
+    margin-top: 20px; /* Add some space above the output */
+    font-size: 16px; /* Set a larger font size for better readability */
+  }
+  

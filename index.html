@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<input type="text" id="input" placeholder="Enter a number">
+<br>
+<p id="output-paragraph"></p>
+<button id="call-button">Call C Function</button>
+<script src="main.dart.mjs" type="module"></script>
+<script type="application/wasm" src="main.dart.wasm"></script>
+<script>
+  // Import the Dart module
+  import * as dartProgram from './main.dart.mjs';
+
+  // Function to call C function from JavaScript
+  async function callCFunctionFromJS(value) {
+    const imports = {}; // Currently empty as we're not passing any imports
+
+    // Compile the WASM on the fly (alternative to pre-compiling `main.dart.wasm`)
+    const wasmSource = await fetch('main.dart.wasm');
+    const wasmBuffer = await wasmSource.arrayBuffer();
+
+    const module = await dartProgram.instantiate(
+      WebAssembly.compile(wasmBuffer),
+      imports
+    );
+
+    await dartProgram.invoke(module); // Invoke any initialization logic in Dart
+
+    // Call the exposed function from Dart
+    module.x.callCFunction(value); // Assuming the function is exposed as `x.callCFunction`
+  }
+
+  // Event listener for button click
+  const callButton = document.getElementById('call-button');
+  callButton.addEventListener('click', () => {
+    const inputElement = document.getElementById('input');
+    const value = parseInt(inputElement.value, 10) || 0; // Parse input value as integer
+    callCFunctionFromJS(value); // Call the function to invoke C function from Dart
+
+    // Access the output from Dart's print statements (visible in the browser console)
+  });
+</script>
+
+</body>
+</html>
