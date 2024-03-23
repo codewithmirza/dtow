@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<<<<<<< HEAD
 <html>
 <head>
   <link rel="stylesheet" href="styles.css">
@@ -45,4 +46,91 @@
 </script>
 
 </body>
+=======
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Flutter web app</title>
+  <script src="flutter.js"></script>
+  <style>
+    /* CSS styles for input fields and button */
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    input {
+      margin-bottom: 10px;
+      padding: 5px;
+    }
+
+    button {
+      padding: 8px 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+  <label for="num1"></label><input type="number" id="num1" placeholder="Enter first number">
+  <label for="num2"></label><input type="number" id="num2" placeholder="Enter second number">
+  <button onclick="addNumbers()">Add Numbers</button>
+  <p id="result"></p>
+</div>
+
+<script src="flutter_service_worker.js"></script>
+<!-- Specify MIME types for WebAssembly and module scripts -->
+<script type="application/javascript" src="wasm_bridge.js"></script> <!-- Load wasm_bridge.js before referencing its functions -->
+<script type="application/dart" src="wasm_bridge.dart"></script>
+<script type="application/wasm" src="example.wasm"></script>
+<script type="module" src="main.dart.mjs"></script>
+<script type="application/wasm" src="main.dart.wasm"></script>
+
+<script>
+  // Function to call the WebAssembly function asynchronously
+  window.callWasmFunction = async (a, b) => {
+      // Check if wasm_bridge is loaded
+      if (typeof wasm_bridge === 'undefined') {
+          console.error('wasm_bridge is not loaded');
+          return null;
+      }
+
+      // Call the WebAssembly function using wasm_bridge
+      return wasm_bridge.callWasmFunction(a, b);
+  };
+
+  // Function to handle button click event
+  function addNumbers() {
+      const num1 = parseInt(document.getElementById('num1').value);
+      const num2 = parseInt(document.getElementById('num2').value);
+      if (!isNaN(num1) && !isNaN(num2)) {
+          // Call the window.callWasmFunction function with the entered numbers
+          window.callWasmFunction(num1, num2)
+              .then(result => {
+                  // Display the result on the HTML page
+                  document.getElementById('result').textContent = `Result: ${result}`;
+              })
+              .catch(error => {
+                  // Handle any errors that occur during the function call
+                  console.error('Error calling WebAssembly function:', error);
+                  document.getElementById('result').textContent = 'Error occurred!';
+              });
+      } else {
+          document.getElementById('result').textContent = 'Please enter valid numbers';
+      }
+  }
+</script>
+
+</body>
+
+>>>>>>> origin/master
 </html>
